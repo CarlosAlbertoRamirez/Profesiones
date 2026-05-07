@@ -1410,7 +1410,13 @@
     }
 
     function startQuiz() {
-      questions = shuffleArray(originalQuestions);
+      questions = shuffleArray(originalQuestions).map(question => {
+        const copy = { ...question };
+        if (copy.options && Array.isArray(copy.options)) {
+          copy.options = shuffleArray(copy.options);
+        }
+        return copy;
+      });
       currentIndex = 0;
       answers = questions.map(() => ({
         value: "",
